@@ -102,9 +102,7 @@ After imputing the mean total number of steps taken per day is  **10766.19** (co
 
 
 ```r
-imputed[, wd :=factor(ifelse(weekdays(date) %in% c("Saturday", "Sunday"), 
-                             "weekend", 
-                             "weekday"))]
+imputed[, wd :=factor(ifelse(weekdays(date) %in% c("Saturday", "Sunday"), "weekend",  "weekday"))]
 ```
 
 ```
@@ -137,11 +135,14 @@ ggplot(inter2,aes(x=interval,y=mean.steps))+geom_line()+
 
 ```r
 ggplot(inter2,aes(x=interval,y=mean.steps, group=wd, color=wd))+geom_line()+
-  ggtitle("Average steps per each 5-min interval after imputing (alternative view")+
+  ggtitle("Average steps per each 5-min interval after imputing (alternative view)")  +
   ylab("Mean steps") 
 ```
 
 ![plot of chunk unnamed-chunk-5](./PA1_template_files/figure-html/unnamed-chunk-52.png) 
 
 
+The exporatory plots indicate as expected differing activity patterns. 
+During weekdays activity is hgher in the earlier part of the days (walking to the office? or jogging before work?) and then sharply decreases (maybe an office job?). 
+In weekends the activity is spead more evenly. That makes sense.
 
