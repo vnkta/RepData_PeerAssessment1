@@ -18,8 +18,7 @@
 ```r
    daily <- activity[, list(sum.steps=sum(steps, na.rm=TRUE)), by=date]
    
-    
-   ggplot(daily, aes(x=date, y=sum.steps, na.rm=TRUE)) + 
+    ggplot(daily, aes(x=date, y=sum.steps)) + 
           geom_histogram(stat="identity") +
           xlab("Steps (Total number)")+
           ggtitle("Total steps per day")
@@ -80,9 +79,8 @@ invisible(imputed[, mean.steps :=NULL])
 
 ```r
    daily2 <- imputed[, list(sum.steps=sum(steps)), by=date]
-   
-    
-  ggplot(daily2, aes(x=date, y=sum.steps, na.rm=TRUE)) + 
+      
+   ggplot(daily2, aes(x=date, y=sum.steps, na.rm=TRUE)) + 
           geom_histogram(stat="identity") +
           xlab("Steps (Total number)")+
           ggtitle("Total steps per day after imputing")
@@ -102,25 +100,8 @@ After imputing the mean total number of steps taken per day is  **10766.19** (co
 
 
 ```r
-imputed[, wd :=factor(ifelse(weekdays(date) %in% c("Saturday", "Sunday"), "weekend",  "weekday"))]
-```
+invisible(imputed[, wd :=factor(ifelse(weekdays(date) %in% c("Saturday", "Sunday"), "weekend",  "weekday"))])
 
-```
-##        interval  steps       date      wd
-##     1:        0  1.717 2012-10-01 weekday
-##     2:        0  0.000 2012-10-02 weekday
-##     3:        0  0.000 2012-10-03 weekday
-##     4:        0 47.000 2012-10-04 weekday
-##     5:        0  0.000 2012-10-05 weekday
-##    ---                                   
-## 17564:     2355  0.000 2012-11-26 weekday
-## 17565:     2355  0.000 2012-11-27 weekday
-## 17566:     2355  0.000 2012-11-28 weekday
-## 17567:     2355  0.000 2012-11-29 weekday
-## 17568:     2355  1.075 2012-11-30 weekday
-```
-
-```r
 inter2 <- imputed[, list(mean.steps=mean(steps, na.rm=TRUE)), by=list(wd, interval)]
 
 

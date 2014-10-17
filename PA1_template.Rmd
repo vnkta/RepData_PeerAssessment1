@@ -22,8 +22,7 @@ output:
    
    daily <- activity[, list(sum.steps=sum(steps, na.rm=TRUE)), by=date]
    
-    
-   ggplot(daily, aes(x=date, y=sum.steps, na.rm=TRUE)) + 
+    ggplot(daily, aes(x=date, y=sum.steps)) + 
           geom_histogram(stat="identity") +
           xlab("Steps (Total number)")+
           ggtitle("Total steps per day")
@@ -70,11 +69,9 @@ invisible(imputed[, mean.steps :=NULL])
 
 
 ```{r}
-   
    daily2 <- imputed[, list(sum.steps=sum(steps)), by=date]
-   
-    
-  ggplot(daily2, aes(x=date, y=sum.steps, na.rm=TRUE)) + 
+      
+   ggplot(daily2, aes(x=date, y=sum.steps, na.rm=TRUE)) + 
           geom_histogram(stat="identity") +
           xlab("Steps (Total number)")+
           ggtitle("Total steps per day after imputing")
@@ -89,7 +86,7 @@ After imputing the mean total number of steps taken per day is  **`r mean2`** (c
 ## Are there differences in activity patterns between weekdays and weekends?
 
 ```{r}
-imputed[, wd :=factor(ifelse(weekdays(date) %in% c("Saturday", "Sunday"), "weekend",  "weekday"))]
+invisible(imputed[, wd :=factor(ifelse(weekdays(date) %in% c("Saturday", "Sunday"), "weekend",  "weekday"))])
 
 inter2 <- imputed[, list(mean.steps=mean(steps, na.rm=TRUE)), by=list(wd, interval)]
 

@@ -67,8 +67,7 @@ if (window.hljs && document.readyState && document.readyState === "complete") {
 <h2>What is mean total number of steps taken per day?</h2>
 <pre class="r"><code>   daily &lt;- activity[, list(sum.steps=sum(steps, na.rm=TRUE)), by=date]
    
-    
-   ggplot(daily, aes(x=date, y=sum.steps, na.rm=TRUE)) + 
+    ggplot(daily, aes(x=date, y=sum.steps)) + 
           geom_histogram(stat=&quot;identity&quot;) +
           xlab(&quot;Steps (Total number)&quot;)+
           ggtitle(&quot;Total steps per day&quot;)</code></pre>
@@ -99,9 +98,8 @@ imputed &lt;- inter[activity]
 invisible(imputed[is.na(steps), steps := mean.steps])
 invisible(imputed[, mean.steps :=NULL])</code></pre>
 <pre class="r"><code>   daily2 &lt;- imputed[, list(sum.steps=sum(steps)), by=date]
-   
-    
-  ggplot(daily2, aes(x=date, y=sum.steps, na.rm=TRUE)) + 
+      
+   ggplot(daily2, aes(x=date, y=sum.steps, na.rm=TRUE)) + 
           geom_histogram(stat=&quot;identity&quot;) +
           xlab(&quot;Steps (Total number)&quot;)+
           ggtitle(&quot;Total steps per day after imputing&quot;)</code></pre>
@@ -112,20 +110,9 @@ invisible(imputed[, mean.steps :=NULL])</code></pre>
 </div>
 <div id="are-there-differences-in-activity-patterns-between-weekdays-and-weekends" class="section level2">
 <h2>Are there differences in activity patterns between weekdays and weekends?</h2>
-<pre class="r"><code>imputed[, wd :=factor(ifelse(weekdays(date) %in% c(&quot;Saturday&quot;, &quot;Sunday&quot;), &quot;weekend&quot;,  &quot;weekday&quot;))]</code></pre>
-<pre><code>##        interval  steps       date      wd
-##     1:        0  1.717 2012-10-01 weekday
-##     2:        0  0.000 2012-10-02 weekday
-##     3:        0  0.000 2012-10-03 weekday
-##     4:        0 47.000 2012-10-04 weekday
-##     5:        0  0.000 2012-10-05 weekday
-##    ---                                   
-## 17564:     2355  0.000 2012-11-26 weekday
-## 17565:     2355  0.000 2012-11-27 weekday
-## 17566:     2355  0.000 2012-11-28 weekday
-## 17567:     2355  0.000 2012-11-29 weekday
-## 17568:     2355  1.075 2012-11-30 weekday</code></pre>
-<pre class="r"><code>inter2 &lt;- imputed[, list(mean.steps=mean(steps, na.rm=TRUE)), by=list(wd, interval)]
+<pre class="r"><code>invisible(imputed[, wd :=factor(ifelse(weekdays(date) %in% c(&quot;Saturday&quot;, &quot;Sunday&quot;), &quot;weekend&quot;,  &quot;weekday&quot;))])
+
+inter2 &lt;- imputed[, list(mean.steps=mean(steps, na.rm=TRUE)), by=list(wd, interval)]
 
 
 
